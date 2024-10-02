@@ -4,7 +4,7 @@
 #include <vector>
 
 using color_t = SDL_Color;
-
+int tester = 0;
 class Framebuffer
 {
 public:
@@ -20,7 +20,7 @@ public:
 public:     
 	int m_width{ 0 };
 	int m_height{ 0 };
-	int m_pitch{ 0 };
+	int m_pitch{ 0 };      
 
 	SDL_Texture* m_texture{ nullptr };
 	std::vector<color_t> m_buffer;
