@@ -28,27 +28,34 @@ int main(int argc, char* argv[])
                 quit = true;
             }
         }
+
+        framebuffer.Clear(color_t{ 0, 0, 0, 255 });
+
+        for (int i = 0; i < 100; i++)
+        {
+            int x1 = rand() % framebuffer.m_width;
+            int y1 = rand() % framebuffer.m_height;
+            int x2 = rand() % framebuffer.m_width;
+            int y2 = rand() % framebuffer.m_height;
+            int x3 = rand() % framebuffer.m_width;
+            int y3 = rand() % framebuffer.m_height;
+
+            //framebuffer.DrawPoint(10, 10, { 255, 255, 255, 255 });
+            //framebuffer.DrawRect(10, 10, 100, 100, {255, 255, 255, 255});
+            //framebuffer.DrawLine(x1, y1, x2, y2, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
+            framebuffer.DrawTriangle(x1, y1, x2, y2, x3, y3, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
+        }
+
+        framebuffer.DrawRect(10, 10, 100, 100, { 255, 0, 0 });
+
+        framebuffer.Update();
+
+        renderer = framebuffer;
+        SDL_RenderPresent(renderer.m_renderer);
+
+
     }
 
-    //// clear screen
-    //SDL_SetRenderDrawColor(renderer.m_renderer, 0, 0, 0, 0);
-    //SDL_RenderClear(renderer.m_renderer);
-
-    framebuffer.Clear(color_t{ 255, 0, 0, 255 });
-
-    for (int i = 0; i < 100; i++)
-    {
-        int x = rand() % 256;
-        int y = rand() % 101;
-        framebuffer.DrawPoint(10, 10, { 255, 255, 255, 255 });
-    }
-
-    framebuffer.DrawRect(10, 10, 100, 100,{255, 0, 0});
-
-    framebuffer.Update();
-
-    renderer = framebuffer;
-    // renderer.CopyFramebuffer(framebuffer);
 
     return 0;
 }
