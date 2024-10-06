@@ -148,6 +148,42 @@ void Framebuffer::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, c
 	DrawLine(x3, y3, x1, y1, color);
 }
 
-void Framebuffer::DrawCircle(int xc, int yc, int x, int y, const color_t& color)
+void Framebuffer::DrawCircle(int xc, int yc, int radius, const color_t& color)
 {
+	// (xc, yc) = (0, radius);
+	int x = 0;
+	int y = radius;
+	int p = 1 - radius;
+	
+	DrawPoint(xc + x, yc + y, color);
+	DrawPoint(xc - x, yc + y, color);
+	DrawPoint(xc + x, yc - y, color);
+	DrawPoint(xc - x, yc - y, color);
+	DrawPoint(xc + y, yc + x, color);
+	DrawPoint(xc - y, yc + x, color);
+	DrawPoint(xc + y, yc - x, color);
+	DrawPoint(xc - y, yc - x, color);
+
+	while (x < y)
+	{
+		x++;
+		if (p < 0)
+		{
+			p += 2 * x + 1;
+		}
+		else
+		{
+			y--;
+			p += 2 * (x - y) + 1;
+		}
+
+		DrawPoint(xc + x, yc + y, color);
+		DrawPoint(xc - x, yc + y, color);
+		DrawPoint(xc + x, yc - y, color);
+		DrawPoint(xc - x, yc - y, color);
+		DrawPoint(xc + y, yc + x, color);
+		DrawPoint(xc - y, yc + x, color);
+		DrawPoint(xc + y, yc - x, color);
+		DrawPoint(xc - y, yc - x, color);
+	}
 }
