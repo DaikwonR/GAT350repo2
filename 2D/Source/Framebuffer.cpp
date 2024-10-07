@@ -63,62 +63,91 @@ void Framebuffer::DrawRect(int x, int y, int width, int height, const color_t& c
 
 void Framebuffer::DrawLine(int x1, int y1, int x2, int y2, const color_t& color)
 {
+
+	// Calculate the difference in x coords between the two points
 	int dx = x2 - x1;
+	// Calculate the difference in y coords between the two points
 	int dy = y2 - y1;
 
+	// Determine if the line is steep (if the absolute difference in y is greater than the absolute difference in x)
 	bool steep = (std::abs(dy) > std::abs(dx));
+	// If the line is steep, swap the roles of x and y for both points to simplify calculation
 	if (steep)
 	{
-		std::swap(x1, y1);
-		std::swap(x2, y2);
+
+		std::swap(x1, y1); // Swap x1 and y1 to make calculations easier for steep lines
+		std::swap(x2, y2); // Swap x2 and y2 to maintain consistency after swapping
 	}
+	// Ensure that we always draw from left to right by swapping points if necessary
+	// x1 and y1 represent the starting point of the line.
+	// x2 and y2 represent the ending point of the line.
 	if (x1 > x2)
 	{
-		std::swap(x1, x2);
-		std::swap(y1, y2);
+		std::swap(x1, x2); // Swap x1 and x2 so that x1 is always the smaller value, ensuring we draw from left to right
+		std::swap(y1, y2); // Swap y1 and y2 to keep the relationship between points consistent
 	}
 
+	// Re-establish dx and dy after any swapping to ensure they are based on the updated coordinates
 	dx = x2 - x1;
+	// Calculate the absolute value of dy, since we need a positive difference for the error term.
 	dy = std::abs(y2 - y1);
 
+	// Initialize the error term, starting at half of dx to ensure balanced stepping.
+	// How far off the current pixel is from the ideal line the we wat to draw the next pixel.
 	int error = dx / 2;
+	// Determine the direction of y movement (either +1 or -1)
+	// ystep determines whether y should increase or decrease or decrease as x increases.
+	// if y1 < y2, the line moves upwards, so ystep = 1. Otherwise, ystep = -1 for downward movement
 	int ystep = (y1 < y2) ? 1 : -1;
 
 	for (int x = x1, y = y1; x <= x2; x++)
 	{
+		// If the line is steep, swap x and y when drawing the point to ensure correctness
+		// We swap x and y to ensure consistency, because if steep is true that means it changed more in the y direction
 		(steep) ? DrawPoint(y, x, color) : DrawPoint(x, y, color);
+
+		// Subtract dy from the error term
 		error -= dy;
 
 		// update error term
 		if (error < 0)
 		{
-			y += ystep;
-			error += dx;
+			y += ystep; // Move y int the appropriate direction (up or down)
+			error += dx; // Reset error for the next step
 		}
 	}
 }
 
 void Framebuffer::DrawLineSlope(int x1, int y1, int x2, int y2, const color_t& color)
 {
+	// Calculate the difference in x coords between the two points
 	int dx = x2 - x1;
+	// Calculate the difference in y coords between the two points
 	int dy = y2 - y1;
 
+	// Handle the case when the line is vertical (dx == 0)
 	if (dx == 0)
 	{
+		// Ensure that y1 is less than y2, swap if needed to draw in the correct direction
 		if (y1 > y2) std::swap(y1, y2);
+		// Iterate over the y values to draw a vertical line
 		for (int y = y1; y < y2; y++)
 		{
+			// Set the color for each point along the vertical line
 			m_buffer[x1 + y * m_width] = color;
 		}
 	}
 	else
 	{
+		// Calculate the slope of the line (m). Cast to float to ensure floating-point division
 		float m = dy / (float)dx;
+		// Calculate the y intercept (b) using y = mx + b, rearranged to solve for b
 		float b = y1 - (m * x1);
 
+		// run > rise
 		if (std::abs(dx) > std::abs(dy))
 		{
-			// run > rise
+			// Iterate over the y values to draw a vertical line
 			for (int x = x1; x < x2; x++)
 			{
 				// y = mx + b
@@ -150,40 +179,52 @@ void Framebuffer::DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, c
 
 void Framebuffer::DrawCircle(int xc, int yc, int radius, const color_t& color)
 {
-	// (xc, yc) = (0, radius);
+
+	// The current start point of the edge of the circle int the x direction
 	int x = 0;
+	//The initial pint at the top of the circle in the y direction
 	int y = radius;
+	// "decision parameter", helps decide whether the next point moves horizontally or diagonally
 	int p = 1 - radius;
 	
-	DrawPoint(xc + x, yc + y, color);
-	DrawPoint(xc - x, yc + y, color);
-	DrawPoint(xc + x, yc - y, color);
-	DrawPoint(xc - x, yc - y, color);
-	DrawPoint(xc + y, yc + x, color);
-	DrawPoint(xc - y, yc + x, color);
-	DrawPoint(xc + y, yc - x, color);
-	DrawPoint(xc - y, yc - x, color);
+	// Draw the initial point in all eight octants of the circle
+	// This draws points using the symmetry of the circle
+	DrawPoint(xc + x, yc + y, color); // Top right
+	DrawPoint(xc - x, yc + y, color); // Top left
+	DrawPoint(xc + x, yc - y, color); // Bottom right
+	DrawPoint(xc - x, yc - y, color); // Bottom left
+	DrawPoint(xc + y, yc + x, color); // Right top
+	DrawPoint(xc - y, yc + x, color); // Left top
+	DrawPoint(xc + y, yc - x, color); // Right bottom
+	DrawPoint(xc - y, yc - x, color); // Left bottom
 
+	// Draws the circle until x and y intersect
 	while (x < y)
 	{
 		x++;
+		// If the decision parameter is negative, the next poit remains within the circle boundary
 		if (p < 0)
 		{
+			// Update the decision parameter to move to the next horizontal point
 			p += 2 * x + 1;
 		}
 		else
 		{
+
 			y--;
+			// Update the decision parameter when moving diagonally (right and down)
 			p += 2 * (x - y) + 1;
 		}
 
-		DrawPoint(xc + x, yc + y, color);
-		DrawPoint(xc - x, yc + y, color);
-		DrawPoint(xc + x, yc - y, color);
-		DrawPoint(xc - x, yc - y, color);
-		DrawPoint(xc + y, yc + x, color);
-		DrawPoint(xc - y, yc + x, color);
-		DrawPoint(xc + y, yc - x, color);
-		DrawPoint(xc - y, yc - x, color);
+		// Draw the points in all eight octants for the current x and y
+		// This ensures the full symmetry of the circle
+		DrawPoint(xc + x, yc + y, color); // Top right
+		DrawPoint(xc - x, yc + y, color); // Top left
+		DrawPoint(xc + x, yc - y, color); // Bottom right
+		DrawPoint(xc - x, yc - y, color); // Bottom left
+		DrawPoint(xc + y, yc + x, color); // Right top
+		DrawPoint(xc - y, yc + x, color); // Left top
+		DrawPoint(xc + y, yc - x, color); // Right bottom
+		DrawPoint(xc - y, yc - x, color); // Left bottom
 	}
 }
