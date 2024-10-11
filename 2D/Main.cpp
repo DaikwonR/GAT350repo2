@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
 
         framebuffer.Clear(color_t{ 0, 0, 0, 255 });
 
+#pragma region Draw(With Loop)
         int x1 = 400 - rand() % framebuffer.m_width;
         int y1 = 300 - rand() % framebuffer.m_height;
         int x2 = rand() % framebuffer.m_width;
@@ -53,6 +54,9 @@ int main(int argc, char* argv[])
             //framebuffer.DrawCircle(x1, x2, 15, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
         }
 
+#pragma endregion
+
+#pragma region Draw(NoLoop)
         framebuffer.DrawImage(100, 100, image);
 
         //framebuffer.DrawLine(150, 150, 250, 250, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
@@ -60,6 +64,14 @@ int main(int argc, char* argv[])
         //framebuffer.DrawCircle(100, 100, 50, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
         //framebuffer.DrawRect(10, 10, 100, 100, { 255, 0, 0 });
 
+        PostProcess::BoxBlur(framebuffer.m_buffer, framebuffer.m_width, framebuffer.m_height);
+        PostProcess::BoxBlur(framebuffer.m_buffer, framebuffer.m_width, framebuffer.m_height);
+        PostProcess::BoxBlur(framebuffer.m_buffer, framebuffer.m_width, framebuffer.m_height);
+        PostProcess::BoxBlur(framebuffer.m_buffer, framebuffer.m_width, framebuffer.m_height);
+
+#pragma endregion
+
+#pragma region SquareOnLine
         int mx, my;
         SDL_GetMouseState(&mx, &my);
 
@@ -74,9 +86,12 @@ int main(int argc, char* argv[])
         CubicPoint(300, 400, 300, 100, mx, my, 600, 400, t, x, y);
         //framebuffer.DrawRect(x - 20, y - 20, 100, 100, { 255, 0, 0, 255 });
 
-        PostProcess::Invert(framebuffer.m_buffer);
+        /*PostProcess::Invert(framebuffer.m_buffer);
         PostProcess::Brightness(framebuffer.m_buffer, 42);
-        PostProcess::Monochrome(framebuffer.m_buffer);
+        PostProcess::Monochrome(framebuffer.m_buffer);*/
+
+#pragma endregion
+
 
         framebuffer.Update();
 
