@@ -16,6 +16,7 @@ enum class BlendMode
 inline color_t NormalBlend(const color_t& src, const color_t& dest);
 inline color_t AlphaBlend(const color_t& src, const color_t& dest);
 inline color_t AdditiveBlend(const color_t& src, const color_t& dest);
+inline color_t MultiplyBlend(const color_t& src, const color_t& dest);
 
 void SetBlendMode(BlendMode blendMode);
 color_t ColorBlend(const color_t& src, const color_t& dest);

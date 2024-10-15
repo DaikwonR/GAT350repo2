@@ -9,13 +9,17 @@
 #include "Source\Image.h"
 #include "Source\PostProcess.h"
 #include "Source\Color.h"
+#include "Source\Model.h"
 
 int main(int argc, char* argv[])
 {
 
+#pragma region Class Declarations
     Renderer renderer;
     renderer.Initialize();
     renderer.CreateWindow("2D", 800, 600);
+
+    SetBlendMode(BlendMode::Normal);
 
     Framebuffer framebuffer(renderer, 800, 600);
     Image image;
@@ -25,8 +29,13 @@ int main(int argc, char* argv[])
     ImageAlpha.Load("colors.png");
     PostProcess::Alpha(ImageAlpha.m_buffer, 128);
 
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+
+
+
+    vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
+    Model model(vertices, { 255, 0, 0, 255 });
+
+#pragma endregion
 
     bool quit = false;
     while (!quit)
@@ -54,15 +63,15 @@ int main(int argc, char* argv[])
         int x3 = rand() % framebuffer.m_width;
         int y3 = rand() % framebuffer.m_height;
 
-        for (int i = 0; i < 0; i++)
-        {
+        //for (int i = 0; i < 0; i++)
+        //{
 
             //framebuffer.DrawPoint(10, 10, { 255, 255, 255, 255 });
             //framebuffer.DrawRect(10, 10, 100, 100, {255, 255, 255, 255});
             //framebuffer.DrawLine(x1, y1, x2, y2, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
             //framebuffer.DrawTriangle(x1, y1, x2, y2, x3, y3, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
             //framebuffer.DrawCircle(x1, x2, 15, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
-        }
+        //}
 
 #pragma endregion
 
@@ -122,10 +131,16 @@ int main(int argc, char* argv[])
         //CubicPoint(300, 400, 300, 100, mx, my, 600, 400, t, x, y);
         //framebuffer.DrawRect(x - 20, y - 20, 100, 100, { 255, 0, 0, 255 });
 
-        SetBlendMode(BlendMode::Normal);
+#pragma region SetBlendModes
+
+        /*SetBlendMode(BlendMode::Normal);
         framebuffer.DrawImage(100, 100, image);
         SetBlendMode(BlendMode::Alpha);
-        framebuffer.DrawImage(mx, my, ImageAlpha);
+        framebuffer.DrawImage(mx, my, ImageAlpha);*/
+
+#pragma endregion
+
+
 
         /*PostProcess::Invert(framebuffer.m_buffer);
         PostProcess::Brightness(framebuffer.m_buffer, 42);
@@ -133,6 +148,14 @@ int main(int argc, char* argv[])
 
 #pragma endregion
 
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+        glm::mat4 translate = glm::translate(modelMatrix, glm::vec3(240.0f, 240.0f, 0.0f));
+        glm::mat4 scale = glm::scale(modelMatrix, glm::vec3(2));
+        glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(time * 90), glm::vec3{0, 0, 1});
+
+        modelMatrix = translate * scale;
+
+        model.Draw(framebuffer, modelMatrix);
 
         framebuffer.Update();
 
@@ -142,7 +165,6 @@ int main(int argc, char* argv[])
 
 
     }
-
 
     return 0;
 }
