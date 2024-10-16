@@ -83,7 +83,7 @@ void Framebuffer::DrawLine(int x1, int y1, int x2, int y2, const color_t& color)
 	// If the line is steep, swap the roles of x and y for both points to simplify calculation
 	if (steep)
 	{
-
+		//DrawPointClip(x, y, color);
 		std::swap(x1, y1); // Swap x1 and y1 to make calculations easier for steep lines
 		std::swap(x2, y2); // Swap x2 and y2 to maintain consistency after swapping
 	}

@@ -10,11 +10,19 @@
 #include "Source\PostProcess.h"
 #include "Source\Color.h"
 #include "Source\Model.h"
+#include "Source\Transform.h"
+#include "Source\ETime.h"
+#include "Source\Input.h"
 
 int main(int argc, char* argv[])
 {
 
 #pragma region Class Declarations
+
+    Time time;
+    Input input;
+    input.Initialize();
+
     Renderer renderer;
     renderer.Initialize();
     renderer.CreateWindow("2D", 800, 600);
@@ -23,23 +31,26 @@ int main(int argc, char* argv[])
 
     Framebuffer framebuffer(renderer, 800, 600);
     Image image;
-    image.Load("scenic.jpg");
+    //image.Load("scenic.jpg");
 
     Image ImageAlpha;
-    ImageAlpha.Load("colors.png");
+    //ImageAlpha.Load("colors.png");
     PostProcess::Alpha(ImageAlpha.m_buffer, 128);
-
-
-
 
     vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
     Model model(vertices, { 255, 0, 0, 255 });
 
+    Transform transform{ {240, 240, 0}, glm::vec3{0}, glm::vec3{3} };
+
 #pragma endregion
+    time.Tick();
+    input.Update();
 
     bool quit = false;
     while (!quit)
     {
+        time.Tick();
+
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
@@ -76,7 +87,7 @@ int main(int argc, char* argv[])
 #pragma endregion
 
 #pragma region Draw(NoLoop)
-        framebuffer.DrawImage(100, 100, image);
+        //framebuffer.DrawImage(100, 100, image);
 
         //framebuffer.DrawLine(150, 150, 250, 250, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
         //framebuffer.DrawTriangle(120, 225, 225, 125, 125, 120, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
@@ -113,6 +124,10 @@ int main(int argc, char* argv[])
 
         //PostProcess::Emboss(framebuffer.m_buffer, framebuffer.m_width, framebuffer.m_height);
 
+        /*PostProcess::Invert(framebuffer.m_buffer);
+        PostProcess::Brightness(framebuffer.m_buffer, 42);
+        PostProcess::Monochrome(framebuffer.m_buffer);*/
+
 #pragma endregion
 
 #pragma region MouseTracking
@@ -122,10 +137,6 @@ int main(int argc, char* argv[])
         //framebuffer.DrawLinearCurve(100, 100, 200, 200, { 255, 255, 255, 255 });
         ////framebuffer.DrawQuadraticCurve(100, 200, mx, my, 300, 200, { 255, 0, 255, 255 });
         //framebuffer.DrawCubicSpline(100, 200, 100, 100, 200, 100, 200, 200, { 255, 0, 0, 255 });
-
-        int ticks = SDL_GetTicks();
-        float time = ticks * 0.001f;
-        float t = std::abs(std::sin(time));
 
         //int x, y;
         //CubicPoint(300, 400, 300, 100, mx, my, 600, 400, t, x, y);
@@ -140,22 +151,19 @@ int main(int argc, char* argv[])
 
 #pragma endregion
 
-
-
-        /*PostProcess::Invert(framebuffer.m_buffer);
-        PostProcess::Brightness(framebuffer.m_buffer, 42);
-        PostProcess::Monochrome(framebuffer.m_buffer);*/
-
 #pragma endregion
 
-        glm::mat4 modelMatrix = glm::mat4(1.0f);
-        glm::mat4 translate = glm::translate(modelMatrix, glm::vec3(240.0f, 240.0f, 0.0f));
-        glm::mat4 scale = glm::scale(modelMatrix, glm::vec3(2));
-        glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(time * 90), glm::vec3{0, 0, 1});
-
-        modelMatrix = translate * scale;
-
-        model.Draw(framebuffer, modelMatrix);
+        glm::vec3 direction{ 0 };
+        if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) direction.x = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_LEFT)) direction.x = -1;
+        if (input.GetKeyDown(SDL_SCANCODE_UP)) direction.y = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_DOWN)) direction.y = -1;
+        if (input.GetKeyDown(SDL_SCANCODE_A)) direction.z = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
+        
+        transform.position += direction * 700.0f * time.GetDeltaTime();
+        transform.rotation.z += 90 * time.GetDeltaTime();
+        model.Draw(framebuffer, transform.GetMatrix());
 
         framebuffer.Update();
 
