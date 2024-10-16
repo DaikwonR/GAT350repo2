@@ -323,7 +323,7 @@ void Framebuffer::DrawImage(int x, int y, const Image& image)
 			// if (color.a == 0) continue;
 			DrawPoint(sx, sy, color);
 
-			m_buffer[sx + sy * m_width] = color;
+			//m_buffer[sx + sy * m_width] = color;
 		}	
 	}
 }

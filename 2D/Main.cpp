@@ -133,10 +133,10 @@ int main(int argc, char* argv[])
 
 #pragma region SetBlendModes
 
-        /*SetBlendMode(BlendMode::Normal);
+        SetBlendMode(BlendMode::Normal);
         framebuffer.DrawImage(100, 100, image);
-        SetBlendMode(BlendMode::Alpha);
-        framebuffer.DrawImage(mx, my, ImageAlpha);*/
+        SetBlendMode(BlendMode::Normal);
+        framebuffer.DrawImage(mx, my, ImageAlpha);
 
 #pragma endregion
 
