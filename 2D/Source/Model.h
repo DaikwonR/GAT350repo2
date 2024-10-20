@@ -14,7 +14,7 @@ public:
 	Model() = default;
 	Model(vertices_t vertices, const color_t& color) : m_vertices{ vertices }, m_color{ color } {}
 	
-	void Draw(class Framebuffer& framebuffer, const glm::mat4& model);
+	void Draw(class Framebuffer& framebuffer, const glm::mat4& model, const class Camera& camera);
 
 private:
 	vertices_t m_vertices;

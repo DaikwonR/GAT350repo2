@@ -13,6 +13,7 @@
 #include "Source\Transform.h"
 #include "Source\ETime.h"
 #include "Source\Input.h"
+#include "Source\Camera.h"
 
 int main(int argc, char* argv[])
 {
@@ -28,6 +29,10 @@ int main(int argc, char* argv[])
     renderer.CreateWindow("2D", 800, 600);
 
     SetBlendMode(BlendMode::Normal);
+
+    Camera camera(renderer.m_width, renderer.m_height);
+    camera.SetView(glm::vec3{ 0, 0, -20 }, glm::vec3{ 0 });
+    camera.SetProjection(60.0f, 800.0f / 600, 0.1f, 200.0f);
 
     Framebuffer framebuffer(renderer, 800, 600);
     Image image;
@@ -154,16 +159,16 @@ int main(int argc, char* argv[])
 #pragma endregion
 
         glm::vec3 direction{ 0 };
-        if (input.GetKeyDown(SDL_SCANCODE_RIGHT)) direction.x = 1;
-        if (input.GetKeyDown(SDL_SCANCODE_LEFT)) direction.x = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_UP)) direction.y = 1;
-        if (input.GetKeyDown(SDL_SCANCODE_DOWN)) direction.y = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_A)) direction.z = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+        if (input.GetKeyDown(SDL_SCANCODE_E)) direction.y = -1;
+        if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
         if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
         
         transform.position += direction * 700.0f * time.GetDeltaTime();
         transform.rotation.z += 90 * time.GetDeltaTime();
-        model.Draw(framebuffer, transform.GetMatrix());
+        model.Draw(framebuffer, transform.GetMatrix(), camera);
 
         framebuffer.Update();
 
