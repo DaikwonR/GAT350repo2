@@ -21,9 +21,8 @@ void Model::Draw(Framebuffer& framebuffer, const glm::mat4& model, const Camera&
 		glm::ivec2 s1 = camera.ViewToScreen(p1);
 		glm::ivec2 s2 = camera.ViewToScreen(p2);
 		glm::ivec2 s3 = camera.ViewToScreen(p3);
-
 		
 
-		framebuffer.DrawTriangle((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y, (int)p3.x, (int)p3.y, m_color);
+		framebuffer.DrawTriangle(s1.x, s1.y, s2.x, s2.y, s3.x, s3.y, m_color);
 	}
 }

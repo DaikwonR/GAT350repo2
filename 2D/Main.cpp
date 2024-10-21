@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
     Camera camera(renderer.m_width, renderer.m_height);
     camera.SetView(glm::vec3{ 0, 0, -20 }, glm::vec3{ 0 });
     camera.SetProjection(60.0f, 800.0f / 600, 0.1f, 200.0f);
+    Transform cameraTransform{ { 0, 0, -20 } };
 
     Framebuffer framebuffer(renderer, 800, 600);
     Image image;
@@ -40,12 +41,12 @@ int main(int argc, char* argv[])
 
     Image ImageAlpha;
     //ImageAlpha.Load("colors.png");
-    PostProcess::Alpha(ImageAlpha.m_buffer, 128);
+    PostProcess::Alpha(ImageAlpha.m_buffer, 120);
 
     vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
     Model model(vertices, { 255, 0, 0, 255 });
 
-    Transform transform{ {240, 240, 0}, glm::vec3{0}, glm::vec3{3} };
+    Transform transform{ {0, 0, 0}, glm::vec3{0, 0, 0}, glm::vec3{ 2 } };
 
 #pragma endregion
     time.Tick();
@@ -165,8 +166,10 @@ int main(int argc, char* argv[])
         if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = 1;
         if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
         if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
+
+        cameraTransform.position += direction * 70.0f * time.GetDeltaTime();
+        camera.SetView(cameraTransform.position, cameraTransform.position + glm::vec3{ 0, 0, 1 });
         
-        transform.position += direction * 700.0f * time.GetDeltaTime();
         transform.rotation.z += 90 * time.GetDeltaTime();
         model.Draw(framebuffer, transform.GetMatrix(), camera);
 
