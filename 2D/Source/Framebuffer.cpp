@@ -113,7 +113,7 @@ void Framebuffer::DrawLine(int x1, int y1, int x2, int y2, const color_t& color)
 	{
 		// If the line is steep, swap x and y when drawing the point to ensure correctness
 		// We swap x and y to ensure consistency, because if steep is true that means it changed more in the y direction
-		(steep) ? DrawPoint(y, x, color) : DrawPoint(x, y, color);
+		(steep) ? DrawPointClip(y, x, color) : DrawPointClip(x, y, color);
 
 		// Subtract dy from the error term
 		error -= dy;

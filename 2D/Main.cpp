@@ -2,6 +2,7 @@
 #include <iostream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <memory>
 
 #include "Source\Renderer.h"
 #include "Source\Framebuffer.h"
@@ -14,6 +15,8 @@
 #include "Source\ETime.h"
 #include "Source\Input.h"
 #include "Source\Camera.h"
+#include "Source\Actor.h"
+#include "Source\Random.h"
 
 int main(int argc, char* argv[])
 {
@@ -44,9 +47,23 @@ int main(int argc, char* argv[])
     PostProcess::Alpha(ImageAlpha.m_buffer, 120);
 
     vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
-    Model model(vertices, { 255, 0, 0, 255 });
+    //Model model(vertices, { 255, 0, 0, 255 });
+    std::shared_ptr<Model> model = std::make_shared<Model>();
+    //model->Load();
+    //model->SetColor({255, 0, 0, 255});
 
-    Transform transform{ {0, 0, 0}, glm::vec3{0, 0, 0}, glm::vec3{ 2 } };
+    std::vector<std::unique_ptr<Actor>> actors;
+
+    for (int i = 0; i < 20; i++)
+    {
+
+        Transform transform{ { randomf(-10.0f, -10.0f), randomf(-10.0f, -10.0f), glm::vec3{0, 0, 0}, glm::vec3{3}} };
+        std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
+        actor->SetColor({ (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256) });
+        actors.push_back(std::move(actor));
+    }
+
+
 
 #pragma endregion
     time.Tick();
@@ -174,8 +191,10 @@ int main(int argc, char* argv[])
         cameraTransform.position += offset * 70.0f * time.GetDeltaTime();
         camera.SetView(cameraTransform.position, cameraTransform.position + cameraTransform.GetForward());
         
-        transform.rotation.z += 90 * time.GetDeltaTime();
-        model.Draw(framebuffer, transform.GetMatrix(), camera);
+        for (auto& actor : actors)
+        {
+            actor->Draw(framebuffer, camera);
+        }
 
         framebuffer.Update();
 

@@ -32,8 +32,8 @@ void Model::Draw(Framebuffer& framebuffer, const glm::mat4& model, const Camera&
 	}
 }
 
-//bool Model::Load(const std::string& filename)
-//{
+bool Model::Load(const std::string& filename)
+{
 //	std::ifstream stream(filename);
 //
 //	if (!stream.is_open())
@@ -53,5 +53,5 @@ void Model::Draw(Framebuffer& framebuffer, const glm::mat4& model, const Camera&
 //
 //		}
 //	}
-//	return false;
-//}
+	return false;
+}

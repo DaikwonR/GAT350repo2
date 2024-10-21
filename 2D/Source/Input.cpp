@@ -15,7 +15,6 @@ bool Input::Initialize()
 
 	// set initial and previous mouse position
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	
 
 	int x, y;
 	SDL_GetMouseState(&x, &y);
