@@ -2,6 +2,11 @@
 #include "Framebuffer.h"
 #include "Camera.h"
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+
 
 void Model::Draw(Framebuffer& framebuffer, const glm::mat4& model, const Camera& camera)
 {
@@ -26,3 +31,27 @@ void Model::Draw(Framebuffer& framebuffer, const glm::mat4& model, const Camera&
 		framebuffer.DrawTriangle(s1.x, s1.y, s2.x, s2.y, s3.x, s3.y, m_color);
 	}
 }
+
+//bool Model::Load(const std::string& filename)
+//{
+//	std::ifstream stream(filename);
+//
+//	if (!stream.is_open())
+//	{
+//		std::cerr << "Error opening" << filename << endl;
+//	}
+//	vertices_t vertices;
+//	std::string line;
+//	while (std::getline(stream, line))
+//	{
+//		if (line.substr)
+//		{
+//
+//		}
+//		else if ()
+//		{
+//
+//		}
+//	}
+//	return false;
+//}

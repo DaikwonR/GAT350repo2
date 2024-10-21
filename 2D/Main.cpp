@@ -162,13 +162,17 @@ int main(int argc, char* argv[])
         glm::vec3 direction{ 0 };
         if (input.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
         if (input.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_E)) direction.y = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_E)) direction.y = 1;
+        if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
         if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
         if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
 
-        cameraTransform.position += direction * 70.0f * time.GetDeltaTime();
-        camera.SetView(cameraTransform.position, cameraTransform.position + glm::vec3{ 0, 0, 1 });
+        cameraTransform.rotation.y += input.GetMousePositionDelta().x * 0.5f;
+
+        glm::vec3 offset = cameraTransform.GetMatrix() * glm::vec4{ direction, 0 };
+
+        cameraTransform.position += offset * 70.0f * time.GetDeltaTime();
+        camera.SetView(cameraTransform.position, cameraTransform.position + cameraTransform.GetForward());
         
         transform.rotation.z += 90 * time.GetDeltaTime();
         model.Draw(framebuffer, transform.GetMatrix(), camera);
