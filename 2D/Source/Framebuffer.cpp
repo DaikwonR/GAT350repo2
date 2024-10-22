@@ -173,13 +173,21 @@ void Framebuffer::DrawLine(int x1, int y1, int x2, int y2, const color_t& color)
 	// Determine if the line is steep (if the absolute difference in y is greater than the absolute difference in x)
 	bool steep = (std::abs(dy) > std::abs(dx));
 	// If the line is steep, swap the roles of x and y for both points to simplify calculation
-	if (steep)
+
+	/*if (steep)
 	{
 		DrawPoint(y1, x1, color);
 	}
 	else
 	{
 		DrawPoint(x1, y1, color);
+	}*/
+
+	if (steep)
+	{
+		//DrawPointClip(x, y, color);
+		std::swap(x1, y1); // Swap x1 and y1 to make calculations easier for steep lines
+		std::swap(x2, y2); // Swap x2 and y2 to maintain consistency after swapping
 	}
 	// Ensure that we always draw from left to right by swapping points if necessary
 	// x1 and y1 represent the starting point of the line.
