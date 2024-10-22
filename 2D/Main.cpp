@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     //Model model(vertices, { 255, 0, 0, 255 });
 
     std::shared_ptr<Model> model = std::make_shared<Model>();
-    model->Load("teapot.obj");
+    model->Load("model.obj");
     model->SetColor({255, 0, 0, 255});
 
     std::vector<std::unique_ptr<Actor>> actors;
