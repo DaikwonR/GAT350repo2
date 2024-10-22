@@ -8,7 +8,7 @@
 class Actor
 {
 public:
-	Actor() = default;
+	// Actor() = default;
 
 	Actor(const Transform& transform, std::shared_ptr<Model> model) : m_transform{ transform }, m_model{ model } {}
 

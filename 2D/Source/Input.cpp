@@ -13,18 +13,6 @@ bool Input::Initialize()
 
 	m_prevKeyboardState = m_keyboardState;
 
-	// set initial and previous mouse position
-	SDL_SetRelativeMouseMode(SDL_TRUE);
-
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-
-	m_mousePosition.x = (float)x;
-	m_mousePosition.y = (float)y;
-	
-	m_prevMousePosition.x = (float)x;
-	m_prevMousePosition.y = (float)y;
-
 	return true;
 }
 
@@ -44,9 +32,12 @@ void Input::Update()
 	int x, y;
 	uint32_t buttonState = SDL_GetMouseState(&x, &y);
 
-	m_prevMousePosition = m_mousePosition;
 	m_mousePosition.x = (float)x;
 	m_mousePosition.y = (float)y;
+
+	SDL_GetRelativeMouseState(&x, &y);
+	m_mouseRelative.x = (float)x;
+	m_mouseRelative.y = (float)y;
 
 	// 000 <- button state
 	// 010 <- button mask
@@ -56,4 +47,9 @@ void Input::Update()
 	m_mouseButtonState[0] = buttonState & SDL_BUTTON_LMASK; 
 	m_mouseButtonState[1] = buttonState & SDL_BUTTON_MMASK; 
 	m_mouseButtonState[2] = buttonState & SDL_BUTTON_RMASK; 
+}
+
+void Input::SetRelativeMode(bool relative)
+{
+	SDL_SetRelativeMouseMode(relative ? SDL_TRUE : SDL_FALSE);
 }

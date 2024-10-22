@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-#include <iostream>
+#include <string>
 
 using vertex_t = glm::vec3;
 using vertices_t = std::vector<vertex_t>;

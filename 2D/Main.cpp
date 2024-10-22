@@ -24,12 +24,15 @@ int main(int argc, char* argv[])
 #pragma region Class Declarations
 
     Time time;
-    Input input;
-    input.Initialize();
 
     Renderer renderer;
     renderer.Initialize();
     renderer.CreateWindow("2D", 800, 600);
+
+    Input input;
+    input.Initialize();
+    input.Update();
+
 
     SetBlendMode(BlendMode::Normal);
 
@@ -48,18 +51,17 @@ int main(int argc, char* argv[])
 
     vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
     //Model model(vertices, { 255, 0, 0, 255 });
+
     std::shared_ptr<Model> model = std::make_shared<Model>();
-    //model->Load();
-    //model->SetColor({255, 0, 0, 255});
+    model->Load("busgame.obj");
+    model->SetColor({255, 0, 0, 255});
 
     std::vector<std::unique_ptr<Actor>> actors;
-
     for (int i = 0; i < 20; i++)
     {
-
-        Transform transform{ { randomf(-10.0f, -10.0f), randomf(-10.0f, -10.0f), glm::vec3{0, 0, 0}, glm::vec3{3}} };
+        Transform transform{ { randomf(-10.0f, 10.0f), randomf(-10.0f, 10.0f), randomf(-10.0f, 10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 20) } };
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
-        actor->SetColor({ (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256) });
+        actor->SetColor({ (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256), 255 });
         actors.push_back(std::move(actor));
     }
 
@@ -176,25 +178,41 @@ int main(int argc, char* argv[])
 
 #pragma endregion
 
-        glm::vec3 direction{ 0 };
-        if (input.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
-        if (input.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_E)) direction.y = 1;
-        if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
-        if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
-        if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
+#pragma region CameraMovement
+        if (input.GetMouseButtonDown(2))
+        {
+            input.SetRelativeMode(true);
 
-        cameraTransform.rotation.y += input.GetMousePositionDelta().x * 0.5f;
+            glm::vec3 direction{ 0 };
+            if (input.GetKeyDown(SDL_SCANCODE_D)) direction.x = 1;
+            if (input.GetKeyDown(SDL_SCANCODE_A)) direction.x = -1;
+            if (input.GetKeyDown(SDL_SCANCODE_E)) direction.y = 1;
+            if (input.GetKeyDown(SDL_SCANCODE_Q)) direction.y = -1;
+            if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
+            if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
 
-        glm::vec3 offset = cameraTransform.GetMatrix() * glm::vec4{ direction, 0 };
+            cameraTransform.rotation.y += input.GetMouseRelative().x * 0.25f;
+            cameraTransform.rotation.x += input.GetMouseRelative().y * 0.25f;
 
-        cameraTransform.position += offset * 70.0f * time.GetDeltaTime();
+            glm::vec3 offset = cameraTransform.GetMatrix() * glm::vec4{ direction, 0 };
+
+            cameraTransform.position += offset * 70.0f * time.GetDeltaTime();
+
+        }
+        else
+        {
+            input.SetRelativeMode(false);
+        }
+
         camera.SetView(cameraTransform.position, cameraTransform.position + cameraTransform.GetForward());
-        
+
         for (auto& actor : actors)
         {
             actor->Draw(framebuffer, camera);
         }
+#pragma endregion
+
+        
 
         framebuffer.Update();
 
