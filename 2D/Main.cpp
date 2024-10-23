@@ -53,8 +53,8 @@ int main(int argc, char* argv[])
     //Model model(vertices, { 255, 0, 0, 255 });
 
     std::shared_ptr<Model> model = std::make_shared<Model>();
-    model->Load("model.obj");
-    model->SetColor({255, 0, 0, 255});
+    model->Load("busgame.obj");
+    model->SetColor({ 255, 0, 0, 255 });
 
     std::vector<std::unique_ptr<Actor>> actors;
     for (int i = 0; i < 20; i++)
@@ -191,8 +191,8 @@ int main(int argc, char* argv[])
             if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
             if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
 
-            cameraTransform.rotation.y += input.GetMouseRelative().x * 0.5f;
-            cameraTransform.rotation.x += input.GetMouseRelative().y * 0.5f;
+            cameraTransform.rotation.y += input.GetMouseRelative().x * 0.25f;
+            cameraTransform.rotation.x += input.GetMouseRelative().y * 0.25f;
 
             glm::vec3 offset = cameraTransform.GetMatrix() * glm::vec4{ direction, 0 };
 
@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
         }
 #pragma endregion
 
-        
+
 
         framebuffer.Update();
 
