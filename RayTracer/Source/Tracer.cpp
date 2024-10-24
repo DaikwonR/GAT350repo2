@@ -1,13 +1,24 @@
 #include "Tracer.h"
 #include "Camera.h"
+#include "Framebuffer.h"
+#include "Scene.h"
 
-void Tracer::Render(Framebuffer& framebuffer, const Camera& camera)
+color3_t Tracer::Trace(Scene& scene, const ray_t& ray)
 {
-	for (int y = 0; y < framebuffer.m_height; y++)
+	// check for object hit in scene
+	for (auto& object : scene.m_objects)
 	{
-		for ()
+		if (object->Hit(ray))
 		{
-
+			return { 1, 0, 0 };
 		}
 	}
+
+	// sky
+	color3_t color{ 0 };
+	glm::vec3 direction = glm::normalize(ray.direction);
+	float t = (direction.y + 1) * 0.5f;
+	color = Lerp(color3_t{ 1, 1, 1 }, color3_t{ 0.5f, 0.7f, 1.0f }, t);
+
+	return color;
 }

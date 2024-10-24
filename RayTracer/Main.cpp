@@ -20,6 +20,7 @@
 #include "Source\Actor.h"
 #include "Source\Random.h"
 #include "Source\Tracer.h"
+#include "Source\Scene.h"
 
 int main(int argc, char* argv[])
 {
@@ -36,11 +37,15 @@ int main(int argc, char* argv[])
 
     Framebuffer framebuffer(renderer, renderer.m_width, renderer.m_height);
 
-    Tracer tracer;
-
     Camera camera{ 70.0f, framebuffer.m_width / (float)framebuffer.m_height };
-    camera.SetView({ 0, 0, -20 }, { 0, 0, 0 });
+    camera.SetView({ 0, 0, -5 }, { 0, 0, 0 });
 
+    Scene scene;
+
+    std::shared_ptr<Material> material = std::make_shared<Material>(color3_t{ 1, 0, 0 });
+    auto object = std::make_unique<Sphere>(glm::vec3{ 0, 0, 0 }, 2.0f, material);
+
+    scene.AddObject(std::move(object));
 
 #pragma endregion
 
@@ -64,7 +69,7 @@ int main(int argc, char* argv[])
 
         framebuffer.Clear(ColorConvert(color4_t{ 0.25f, 0, 0, 1 }));
 
-        tracer.Render(framebuffer, camera);
+        scene.Render(framebuffer, camera);
 
         framebuffer.Update();
 

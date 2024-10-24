@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Ray.h"
+
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #define GLM_FORCE_LEFT_HANDED
 #include <glm/glm.hpp>
@@ -11,6 +13,8 @@ public:
 	void SetView(const glm::vec3& eye, const glm::vec3& target, const glm::vec3& up = glm::vec3{ 0, 1, 0 });
 
 	Camera(float fov, float aspectRatio) : m_fov{ fov }, m_aspectRatio{ aspectRatio } {}
+
+	ray_t GetRay(const glm::vec2& point) const;
 
 private:
 	void CalculateViewPlane();
