@@ -42,24 +42,25 @@ int main(int argc, char* argv[])
     Transform cameraTransform{ { 0, 0, -20 } };
 
     Framebuffer framebuffer(renderer, 800, 600);
+
     Image image;
-    //image.Load("scenic.jpg");
+    image.Load("sky_2.png");
 
     Image ImageAlpha;
-    //ImageAlpha.Load("colors.png");
+    //ImageAlpha.Load("scenic.png");
     PostProcess::Alpha(ImageAlpha.m_buffer, 120);
 
     vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
     //Model model(vertices, { 255, 0, 0, 255 });
 
     std::shared_ptr<Model> model = std::make_shared<Model>();
-    model->Load("busgame.obj");
+    model->Load("ww_plane.obj");
     model->SetColor({ 255, 0, 0, 255 });
 
     std::vector<std::unique_ptr<Actor>> actors;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 3; i++)
     {
-        Transform transform{ { randomf(-10.0f, 10.0f), randomf(-10.0f, 10.0f), randomf(-10.0f, 10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 20) } };
+        Transform transform{ { randomf(-10.0f, 15.0f), randomf(115.0f, 300.0f), randomf(-100.0f, -10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 30) } };
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
         actor->SetColor({ (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256), 255 });
         actors.push_back(std::move(actor));
@@ -68,13 +69,12 @@ int main(int argc, char* argv[])
 
 
 #pragma endregion
-    time.Tick();
-    input.Update();
 
     bool quit = false;
     while (!quit)
     {
         time.Tick();
+        input.Update();
 
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
 #pragma endregion
 
 #pragma region Draw(NoLoop)
-        //framebuffer.DrawImage(100, 100, image);
+        framebuffer.DrawImage(0, 30, image);
 
         //framebuffer.DrawLine(150, 150, 250, 250, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
         //framebuffer.DrawTriangle(120, 225, 225, 125, 125, 120, { (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255), (uint8_t)(rand() % 255) });
@@ -170,9 +170,9 @@ int main(int argc, char* argv[])
 #pragma region SetBlendModes
 
         SetBlendMode(BlendMode::Normal);
-        framebuffer.DrawImage(100, 100, image);
+        //framebuffer.DrawImage(100, 100, image);
         SetBlendMode(BlendMode::Normal);
-        framebuffer.DrawImage(mx, my, ImageAlpha);
+        //framebuffer.DrawImage(mx, my, ImageAlpha);
 
 #pragma endregion
 
@@ -191,12 +191,12 @@ int main(int argc, char* argv[])
             if (input.GetKeyDown(SDL_SCANCODE_W)) direction.z = 1;
             if (input.GetKeyDown(SDL_SCANCODE_S)) direction.z = -1;
 
-            cameraTransform.rotation.y += input.GetMouseRelative().x * 0.25f;
-            cameraTransform.rotation.x += input.GetMouseRelative().y * 0.25f;
+            cameraTransform.rotation.y += input.GetMouseRelative().x * 0.55f;
+            cameraTransform.rotation.x += input.GetMouseRelative().y * 0.55f;
 
             glm::vec3 offset = cameraTransform.GetMatrix() * glm::vec4{ direction, 0 };
 
-            cameraTransform.position += offset * 70.0f * time.GetDeltaTime();
+            cameraTransform.position += offset * 75.0f * time.GetDeltaTime();
 
         }
         else
