@@ -54,7 +54,9 @@ int main(int argc, char* argv[])
     //Model model(vertices, { 255, 0, 0, 255 });
 
     std::shared_ptr<Model> model = std::make_shared<Model>();
-    model->Load("ww_plane.obj");
+    //model->Load("ww_plane.obj");
+    //model->Load("Clouds.obj");
+    model->Load("Bird.obj");
     model->SetColor({ 255, 0, 0, 255 });
 
     std::vector<std::unique_ptr<Actor>> actors;
