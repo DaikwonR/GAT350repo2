@@ -1,5 +1,5 @@
 #include "Sphere.h"
-#include "../Ray.h"
+#include "Ray.h"
 
 bool Sphere::Hit(const ray_t& ray)
 {

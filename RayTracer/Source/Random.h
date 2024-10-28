@@ -19,3 +19,13 @@ inline glm::vec2 randomOnUnitCircle()
 
 	//return { glm::cos{ Math::Cos(Math::DegToRad(angle)), Math::Sin(Math::DegToRad(angle)) } };
 }
+
+inline glm::vec3 random(const glm::vec3& v1, const glm::vec3& v2)
+{
+	return glm::vec3
+	{
+		random(v1.x, v2.x),
+		random(v1.y, v2.y),
+		random(v1.z, v2.z),
+	};
+}

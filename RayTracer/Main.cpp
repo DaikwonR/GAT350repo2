@@ -21,6 +21,8 @@
 #include "Source\Random.h"
 #include "Source\Tracer.h"
 #include "Source\Scene.h"
+#include "Source\Plane.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -47,6 +49,23 @@ int main(int argc, char* argv[])
 
     scene.AddObject(std::move(object));
 
+    auto plane = std::make_unique<Plane>(glm::vec3{ 0, 0, 0 }, glm::vec3{ 0, 1, 0 }, material);
+    scene.AddObject(std::move(plane));
+
+    std::shared_ptr<Material> grey = std::make_shared<Material>(color3_t{ 0.5f });
+    std::shared_ptr<Material> red = std::make_shared<Material>(color3_t{ 1, 0, 0 });
+    std::shared_ptr<Material> blue = std::make_shared<Material>(color3_t{ 0, 0, 1 });
+
+    std::vector<Sphere> spheres;
+
+    //auto object = std::make_unique<Sphere>(random(glm::vec3{ -10 }, glm::vec3{ 10 }, random(1, 20), material));
+    scene.AddObject(std::move(object));
+
+    auto plane = std::make_unique<Plane>(glm::vec3{ 0, -5, 0 }, glm::vec3{ 0, 1, 0 }, grey);
+    scene.AddObject(std::move(plane));
+
+
+
 #pragma endregion
 
     bool quit = false;
@@ -69,6 +88,15 @@ int main(int argc, char* argv[])
 
         framebuffer.Clear(ColorConvert(color4_t{ 0.25f, 0, 0, 1 }));
 
+        glm::vec3 posMin = glm::vec3(-10.0f, -10.0f, -10.0f);
+        glm::vec3 posMax = glm::vec3(10.0f, 10.0f, 10.0f);
+        float radMin = 0.5f;
+        float radMax = 2.0f;
+
+        for (int i = 0; i < 5; i++)
+        {
+            //spheres.begin
+        }
         scene.Render(framebuffer, camera);
 
         framebuffer.Update();

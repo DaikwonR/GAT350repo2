@@ -1,6 +1,10 @@
 #pragma once
 
+#define FLT_EPSILON
+
 #include <glm/glm.hpp>
+#include <cmath>
+#include <cfloat>
 
 
 // lerp = P0 + t(P1 - p0)
@@ -53,4 +57,10 @@ inline void CubicPoint(int x1, int y1, int x2, int y2, int x3, int y3, int x4, i
 
 	x = (int)(a * x1 + b * x2 + c * x3 + d * x4);
 	y = (int)(a * y1 + b * y2 + c * y3 + d * y4);
+}
+
+
+inline bool Approximately(float v1, float v2)
+{
+	return std::fabs(v1 - v2);
 }

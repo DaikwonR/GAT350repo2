@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Color.h"
-#include "../Ray.h"
+#include "Ray.h"
 
 class Tracer
 {
