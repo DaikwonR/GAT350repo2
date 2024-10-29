@@ -2,6 +2,9 @@
 #include "Camera.h"
 #include "Framebuffer.h"
 #include "Tracer.h"
+#include "Random.h"
+
+#include <iostream>
 
 void Scene::Render(Framebuffer& framebuffer, const Camera& camera)
 {

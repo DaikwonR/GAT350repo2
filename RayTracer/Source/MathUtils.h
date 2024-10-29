@@ -1,6 +1,6 @@
 #pragma once
 
-#define FLT_EPSILON
+#define FLT_EPSILON 1.192092896e-07F
 
 #include <glm/glm.hpp>
 #include <cmath>
@@ -62,5 +62,10 @@ inline void CubicPoint(int x1, int y1, int x2, int y2, int x3, int y3, int x4, i
 
 inline bool Approximately(float v1, float v2)
 {
-	return std::fabs(v1 - v2);
+	return (std::fabs(v1 - v2) < FLT_EPSILON);
+}
+
+inline glm::vec3 Reflect(const glm::vec3 & i, const glm::vec3& n)
+{
+	return i - (n * glm::dot(n, i) * 2.0f);
 }

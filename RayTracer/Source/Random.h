@@ -1,6 +1,9 @@
 #pragma once
 
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <glm/glm.hpp>
+#include <glm/gtx/norm.hpp>
 #include <random>
 
 inline int random() { return rand(); }
@@ -11,21 +14,38 @@ inline float randomf() { return rand() / (float)RAND_MAX; } // 0-1
 inline float randomf(float max) { return max * randomf(); }
 inline float randomf(float min, float max) { return min + randomf(max - min); }
 
+inline glm::vec3 random(const glm::vec3& v1, const glm::vec3& v2)
+{
+	return glm::vec3
+	{
+		randomf(v1.x, v2.x),
+		randomf(v1.y, v2.y),
+		randomf(v1.z, v2.z)
+	};
+}
+
 inline glm::vec2 randomOnUnitCircle()
 {
 	float angle = randomf(0, 360);
 	float radianAngle = glm::radians(angle);
 	return { glm::cos(radianAngle), glm::sin(radianAngle) };
-
-	//return { glm::cos{ Math::Cos(Math::DegToRad(angle)), Math::Sin(Math::DegToRad(angle)) } };
 }
 
-inline glm::vec3 random(const glm::vec3& v1, const glm::vec3& v2)
+inline glm::vec3 randomInUnitSphere()
 {
-	return glm::vec3
+	glm::vec3 v;
+
+	do
 	{
-		random(v1.x, v2.x),
-		random(v1.y, v2.y),
-		random(v1.z, v2.z),
-	};
+		v = random(glm::vec3{ -1 }, glm::vec3{ 1 });
+	} while (glm::length2(v) > 1);
+
+	return v;
+}
+
+inline glm::vec3 randomOnUnitSphere()
+{
+	return glm::normalize(randomInUnitSphere());
+
+
 }
