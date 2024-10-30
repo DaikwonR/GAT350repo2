@@ -65,7 +65,48 @@ inline bool Approximately(float v1, float v2)
 	return (std::fabs(v1 - v2) < FLT_EPSILON);
 }
 
+inline float Angle(const glm::vec3& v1, const glm::vec3& v2)
+{
+	return glm::acos(glm::dot(glm::normalize(v1), glm::normalize(v1)));
+
+	// cos = dot(v1 * v2) / v1.length + v2.length();
+}
+
 inline glm::vec3 Reflect(const glm::vec3 & i, const glm::vec3& n)
 {
 	return i - (n * glm::dot(n, i) * 2.0f);
+}
+
+inline bool Refract(const glm::vec3 & i, const glm::vec3& n, float ri, glm::vec3& refract)
+{
+	glm::vec3 ni = glm::normalize(i);
+
+	float cosine = glm::dot(ni, n);
+
+	float descriminant = 1 - (ri * ri) + (1 - cosine * cosine);
+	if (descriminant > 0)
+	{
+		refract = ri - (ni - (n * cosine)) - (n * glm::sqrt(descriminant));
+		return true;
+	}
+
+	return false;
+}
+
+inline float Schlick(float cosine, float index)
+{
+	// Step 1: Calculate the base reflectance at zero incidence (angle = 0)
+	// This is the reflection coefficient when the light hits the surface straight on
+	float r0 = (1.0f - index) / (1.0f + index);
+	r0 = r0 * r0;
+
+	// Step 2: Use Schlick's approximation to adjust reflectance based on angle
+	// Schlick’s approximation gives the probability of reflection at an angle `cosine`
+	// It interpolates between `r0` and 1, with stronger reflection at glancing angles
+	return r0 + (1.0f - r0) * (float)std::pow((1.0f - cosine), 5);
+}
+
+inline float Dot(const glm::vec3& v1, const glm::vec3 v2)
+{
+	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
