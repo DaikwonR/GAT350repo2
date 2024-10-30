@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     std::shared_ptr<Material> idk = std::make_shared<Dielectric>(color3_t{ 0, 1, 1 }, 20.4f);
     std::shared_ptr<Material> blu = std::make_shared<Lambertian>(color3_t{ 0, 0, 1 });
 
-    std::vector<std::shared_ptr<Material>> materials = { red, blue };
+    std::vector<std::shared_ptr<Material>> materials = { red, grey };
 
     auto plane = std::make_unique<Plane>(glm::vec3{ 0, -1, 0 }, glm::vec3{ 0, 1, 0 }, grey);
     scene.AddObject(std::move(plane));
@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 
     // render scene
     //framebuffer.Clear(ColorConvert(color4_t{ 0.25f, 0, 0, 1 }));
-    scene.Render(framebuffer, camera, 2, 3);
+    scene.Render(framebuffer, camera, 50);
     framebuffer.Update();
 
 #pragma endregion
