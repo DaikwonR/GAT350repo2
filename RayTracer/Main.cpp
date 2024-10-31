@@ -47,18 +47,18 @@ int main(int argc, char* argv[])
 
     Scene scene;
 
-    std::shared_ptr<Material> material = std::make_shared<Lambertian>(color3_t{ 1, 0, 0 });
+    std::shared_ptr<Material> material = std::make_shared<Lambertian>(color3_t{ 1, 1, 1 });
     auto object = std::make_unique<Sphere>(glm::vec3{ 0, 0, 0 }, 2.0f, material);
     scene.AddObject(std::move(object));
 
 
     std::shared_ptr<Material> grey = std::make_shared<Metal>(color3_t{ 0.5f }, 0.0f);
-    std::shared_ptr<Material> red = std::make_shared<Lambertian>(color3_t{ 1, 1, 1 });
-    std::shared_ptr<Material> blue = std::make_shared<Emissive>(color3_t{ 0, 0, 1 }, 1.0f);
+    //std::shared_ptr<Material> red = std::make_shared<Lambertian>(color3_t{ 1, 1, 1 });
+    //std::shared_ptr<Material> blue = std::make_shared<Emissive>(color3_t{ 0, 0, 1 }, 1.0f);
     std::shared_ptr<Material> idk = std::make_shared<Dielectric>(color3_t{ 0, 1, 1 }, 20.4f);
-    std::shared_ptr<Material> blu = std::make_shared<Lambertian>(color3_t{ 0, 0, 1 });
+    std::shared_ptr<Material> blu = std::make_shared<Lambertian>(color3_t{ 0.5, 0, 1 });
 
-    std::vector<std::shared_ptr<Material>> materials = { red, blue };
+    std::vector<std::shared_ptr<Material>> materials = { blu, idk };
 
     auto plane = std::make_unique<Plane>(glm::vec3{ 0, -1, 0 }, glm::vec3{ 0, 1, 0 }, grey);
     scene.AddObject(std::move(plane));

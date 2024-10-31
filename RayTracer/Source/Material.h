@@ -57,7 +57,7 @@ public:
 	color3_t GetEmissive() const override { return m_albedo * m_intensity; }
 
 protected:
-	float m_intensity = 0;
+	float m_intensity{ 1 };
 };
 
 

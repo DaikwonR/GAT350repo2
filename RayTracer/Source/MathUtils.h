@@ -83,10 +83,10 @@ inline bool Refract(const glm::vec3 & i, const glm::vec3& n, float ri, glm::vec3
 
 	float cosine = glm::dot(ni, n);
 
-	float descriminant = 1 - (ri * ri) + (1 - cosine * cosine);
-	if (descriminant > 0)
+	float discriminant = 1 - (ri * ri) * (1 - cosine * cosine);
+	if (discriminant > 0)
 	{
-		refract = ri - (ni - (n * cosine)) - (n * glm::sqrt(descriminant));
+		refract = ri * (ni - (n * cosine)) - (n * glm::sqrt(discriminant));
 		return true;
 	}
 
