@@ -6,6 +6,14 @@
 
 #include <iostream>
 
+void Scene::Update()
+{
+	for (auto& object : m_objects)
+	{
+		object->Update();
+	}
+}
+
 void Scene::Render(Framebuffer& framebuffer, const Camera& camera, int numSamples , int depth)
 {
 	for (int y = 0; y < framebuffer.m_height; y++)
