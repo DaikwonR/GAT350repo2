@@ -19,10 +19,10 @@ public:
 
 	std::weak_ptr<Material> GetMaterial() { return m_material; }
 
-	virtual void Update() = 0;
+	virtual void Update() {}
 
-private:
+protected:
 
-	const Transform& m_transform;
+	Transform m_transform;
 	std::shared_ptr<Material> m_material;
 };

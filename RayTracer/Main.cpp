@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 
     Scene scene;
 
-    Model model;
+    //Model model;
 
     InitScene(scene);
 
@@ -119,7 +119,8 @@ void InitScene(Scene& scene)
     glm::vec3 v2{ 1.0f, 0.0f, -5.0f };
     glm::vec3 v3{ 0.0f, 1.0f, -5.0f };
 
-    auto triangle = std::make_unique<Triangle>(v1, v2, v3, red);
-    model->Load("")
-    scene.AddObject(std::move(triangle));
+    //auto triangle = std::make_unique<Triangle>(v1, v2, v3, red);
+    auto model = std::make_unique<Model>(Transform{ glm::vec3{ random(glm::vec3{ -10.0f }, glm::vec3{ 10.0f })} }, materials[random(5)]);
+    model->Load("");
+    scene.AddObject(std::move(model));
 }

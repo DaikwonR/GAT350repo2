@@ -14,7 +14,7 @@ bool Sphere::Hit(const ray_t& ray, raycastHit_t& raycastHit, float minDistance, 
     return true;
 }
 
-bool Sphere::RayCast(const ray_t& ray, const glm::vec3& center, float radius, float minDistance, float maxDistance, float t)
+bool Sphere::RayCast(const ray_t& ray, const glm::vec3& center, float radius, float minDistance, float maxDistance, float& t)
 {
     // Vector from the ray origin to the center of the sphere
     glm::vec3 oc = ray.origin - center;

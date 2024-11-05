@@ -73,23 +73,26 @@ bool Model::Load(const std::string& filename)
 		}
 	}
 
-	m_vertices.resize(m_local_vertices);
+	m_vertices.resize(m_local_vertices.size());
 
 	stream.close();
 	return false;
 }
 
-bool Model::Hit(const ray_t& ray, raycastHit_t* raycastHit, float minDistance, float maxDistance)
+bool Model::Hit(const ray_t& ray, raycastHit_t& raycastHit, float minDistance, float maxDistance)
 {
 	for (size_t i = 0; i < m_vertices.size(); i += 3)
 	{
 		float t;
 		if (Triangle::RayCast(ray, m_vertices[i], m_vertices[i + 1], m_vertices[i + 2], minDistance, maxDistance, t))
 		{
-			raycastHit->distance = t;
-			raycastHit->point = ray.at(t);
+			raycastHit.distance = t;
+			raycastHit.point = ray.at(t);
 
-			glm::vec3 edge = 
+			glm::vec3 edge1 = m_vertices[i + 1] - m_vertices[i];
+			glm::vec3 edge2 = m_vertices[i + 2] - m_vertices[i];
+
+			raycastHit.normal;
 		}
 	}
 	return false;
