@@ -92,7 +92,10 @@ bool Model::Hit(const ray_t& ray, raycastHit_t& raycastHit, float minDistance, f
 			glm::vec3 edge1 = m_vertices[i + 1] - m_vertices[i];
 			glm::vec3 edge2 = m_vertices[i + 2] - m_vertices[i];
 
-			raycastHit.normal;
+			raycastHit.material = GetMaterial();
+			raycastHit.normal = glm::normalize(Cross(edge1, edge2));
+
+			return true;
 		}
 	}
 	return false;

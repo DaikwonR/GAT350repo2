@@ -25,6 +25,11 @@ ray_t Camera::GetRay(const glm::vec2& point) const
 	return ray;
 }
 
+void Camera::SetFOV(float fov)
+{
+	m_fov = fov;
+}
+
 void Camera::CalculateViewPlane()
 {
 	float theta = glm::radians(m_fov);

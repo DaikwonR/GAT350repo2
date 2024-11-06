@@ -5,6 +5,11 @@
 
 color3_t Tracer::Trace(Scene& scene, const ray_t& ray, float minDistance, float maxDistance, int depth)
 {
+	if (depth == 0)
+	{
+		return color3_t{ 0 };
+	}
+
 	raycastHit_t raycastHit;
 	float closestDistance = maxDistance;
 	bool isHit = false;
@@ -18,11 +23,6 @@ color3_t Tracer::Trace(Scene& scene, const ray_t& ray, float minDistance, float 
 			isHit = true;
 			closestDistance = raycastHit.distance;
 		}
-	}
-
-	if (depth == 0)
-	{
-		return color3_t{ 0 };
 	}
 
 	if (isHit)
@@ -43,7 +43,7 @@ color3_t Tracer::Trace(Scene& scene, const ray_t& ray, float minDistance, float 
 	// sky
 	glm::vec3 direction = glm::normalize(ray.direction);
 	float t = (direction.y + 1) * 0.5f;
-	color3_t color = Lerp(color3_t{ 1, 1, 1 }, color3_t{ 0.5f, 0.7f, 1.0f }, t);
+	color3_t color = Lerp(scene.m_skyBottom, scene.m_skyTop, t);
 
 	return color;
 }

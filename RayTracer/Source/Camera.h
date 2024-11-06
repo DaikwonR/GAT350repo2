@@ -16,10 +16,14 @@ public:
 
 	ray_t GetRay(const glm::vec2& point) const;
 
+	void SetFOV(float fov);
+
 private:
 	void CalculateViewPlane();
 
 private:
+
+
 
 	glm::mat4 m_view{1};
 	glm::mat4 m_projection{0};

@@ -3,6 +3,7 @@
 #include "Framebuffer.h"
 #include "Tracer.h"
 #include "Random.h"
+#include "ETime.h"
 
 #include <iostream>
 
@@ -16,6 +17,9 @@ void Scene::Update()
 
 void Scene::Render(Framebuffer& framebuffer, const Camera& camera, int numSamples , int depth)
 {
+	Time frameTimer;
+	Time scanlineTimer;
+
 	for (int y = 0; y < framebuffer.m_height; y++)
 	{
 		for (int x = 0; x < framebuffer.m_width; x++)
