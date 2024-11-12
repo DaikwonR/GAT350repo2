@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	// render scene
 	// framebuffer.Clear(ColorConvert(color4_t{ 0.25f, 0, 0, 1 }));
 	scene.Update();
-	scene.Render(framebuffer, camera, 110, 6);
+	scene.Render(framebuffer, camera, 200, 6);
 	framebuffer.Update();
 
 #pragma endregion
@@ -145,9 +145,9 @@ void InitScene02(Scene& scene, Camera& camera)
 	camera.SetFOV(80.0f);
 	camera.SetView({ 0, 0, -20 }, { 0, 0, 0 });
 
-	//std::shared_ptr<Material> material = std::make_shared<Lambertian>(color3_t{ 1.8f, 0.2f, 0.5f });
-	//auto object = std::make_unique<Sphere>(glm::vec3{ 0, 0, 8 }, 2.0f, material);
-	//scene.AddObject(std::move(object));
+	std::shared_ptr<Material> material = std::make_shared<Lambertian>(color3_t{ 1.8f, 0.2f, 0.5f });
+	auto object = std::make_unique<Sphere>(glm::vec3{ 0, 0, 8 }, 2.0f, material);
+	scene.AddObject(std::move(object));
 
 
 	std::shared_ptr<Material> grey = std::make_shared<Metal>(color3_t{ 0.5f }, 0.0f);
@@ -158,7 +158,7 @@ void InitScene02(Scene& scene, Camera& camera)
 	std::shared_ptr<Material> white = std::make_shared<Lambertian>(color3_t{ 1, 1, 1 });
 
 	std::shared_ptr<Material> blue = std::make_shared<Emissive>(color3_t{ 0, 0, 1 }, 1.0f);
-	std::shared_ptr<Material> white2 = std::make_shared<Emissive>(color3_t{ 1, 1, 1 }, 20.0f);
+	std::shared_ptr<Material> white2 = std::make_shared<Emissive>(color3_t{ 1, 1, 1 }, 15.0f);
 
 	std::vector<std::shared_ptr<Material>> materials = { grey, idk };
 
