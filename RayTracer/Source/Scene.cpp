@@ -40,5 +40,6 @@ void Scene::Render(Framebuffer& framebuffer, const Camera& camera, int numSample
 			color / static_cast<float>(numSamples);
 			framebuffer.DrawPoint(x, y, ColorConvert(color));
 		}
+		std::cout << y << std::endl;
 	}
 }
