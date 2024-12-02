@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     // shader
     VertexShader::uniforms.view = camera.GetView();
     VertexShader::uniforms.projection = camera.GetProjection();
-    VertexShader::uniforms.ambient = color3_t{ 0.1f };
+    VertexShader::uniforms.ambient = color3_t{ 0.01f };
 
     VertexShader::uniforms.light.position = glm::vec3{ 10, 10, -10 };
     VertexShader::uniforms.light.direction = glm::vec3{ 0, -1, 0 };

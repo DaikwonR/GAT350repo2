@@ -1,6 +1,7 @@
 #include "Shader.h"
 #include "Framebuffer.h"
 #include "Rasterizer.h"
+#include "MathUtils.h"
 
 Framebuffer* Shader::framebuffer{ nullptr };
 
@@ -8,7 +9,7 @@ void Shader::Draw(const vertexbuffer_t& vb)
 {
 	// vertex shader
 	std::vector<vertex_output_t> overtices;
-	overtices.reserve(vb.size);
+	overtices.reserve(vb.size());
 	for (auto& vertex : vb)
 	{
 		vertex_output_t overtex;
@@ -23,10 +24,13 @@ void Shader::Draw(const vertexbuffer_t& vb)
 		vertex_output_t& v1 = overtices[i + 1];
 		vertex_output_t& v2 = overtices[i + 2];
 
+		// screen points
 		glm::vec2 s0, s1, s2;
 		if (!ToScreen(v0, s0)) continue;
 		if (!ToScreen(v1, s1)) continue;
 		if (!ToScreen(v2, s2)) continue;
+
+		float z = cross(s1, s2);
 
 		// rasterization
 		Rasterizer::Triangle(*framebuffer, s0, s1, s2, v0, v1, v2 );

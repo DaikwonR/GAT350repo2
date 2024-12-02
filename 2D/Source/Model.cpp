@@ -90,12 +90,3 @@ bool Model::Load(const std::string& filename)
 	return false;
 }
 
-void Model::Draw()
-{
-	Shader::Draw(m_vb);
-}
-
-void Model::SetColor(const color4_t& color)
-{
-	m_color = color;
-}

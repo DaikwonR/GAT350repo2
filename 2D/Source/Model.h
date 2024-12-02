@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 
-using vertex_t = glm::vec3;
 using vertices_t = std::vector<vertex_t>;
 
 class Model

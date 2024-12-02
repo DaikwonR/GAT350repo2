@@ -19,14 +19,14 @@ void VertexShader::Process(const vertex_t& ivertex, vertex_output_t& overtex)
     glm::vec3 light_position{ 10, 10, -10 };
     // transform to view space
     // it is already in world space
-    light_position = uniforms.view * glm::vec4{ light_position, 1 };
+    light_position = uniforms.view * glm::vec4{ uniforms.light.position, 1 };
 
     glm::vec3 vposition = mv * glm::vec4{ ivertex.position, 1 };
     glm::vec3 light_dir = glm::normalize(light_position - vposition); // normalize light direction
 
     float intensity = std::max(0.0f, glm::dot(light_dir, overtex.normal));
-    color3_t light_color{ 1, 0, 0 };
-    color3_t diffuse = light_color * intensity;
+    //color3_t light_color{ 1, 0, 0 };
+    color3_t diffuse = uniforms.light.color * intensity;
 
     overtex.color = uniforms.ambient + diffuse;
 }
