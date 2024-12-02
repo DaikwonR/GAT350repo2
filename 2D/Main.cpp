@@ -38,14 +38,14 @@ int main(int argc, char* argv[])
     SetBlendMode(BlendMode::Normal);
 
     Camera camera(renderer.m_width, renderer.m_height);
-    camera.SetView(glm::vec3{ 0, 0, -20 }, glm::vec3{ 0 });
+    camera.SetView(glm::vec3{ 0, 0, 0 }, glm::vec3{ 0 });
     camera.SetProjection(60.0f, 800.0f / 600, 0.1f, 200.0f);
     Transform cameraTransform{ { 0, 0, -20 } };
 
     Framebuffer framebuffer(renderer, 800, 600);
 
     Image image;
-    image.Load("scenic.jpg");
+    //image.Load("scenic.jpg");
 
     Image ImageAlpha;
     ImageAlpha.Load("colors.png");
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     //model->Load("ww_plane.obj");
     //model->Load("Clouds.obj");
     //model->Load("Bird.obj");
-    model->Load("cub..obj");
+    model->Load("cube.obj");
     model->SetColor({ 1, 0, 0, 1 });
 
     std::vector<std::unique_ptr<Actor>> actors;
