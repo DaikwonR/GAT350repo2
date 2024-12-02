@@ -17,6 +17,7 @@
 #include "Source\Camera.h"
 #include "Source\Actor.h"
 #include "Source\Random.h"
+#include "Source\Shader.h"
 
 int main(int argc, char* argv[])
 {
@@ -44,27 +45,35 @@ int main(int argc, char* argv[])
     Framebuffer framebuffer(renderer, 800, 600);
 
     Image image;
-    image.Load("sky_2.png");
+    image.Load("scenic.jpg");
 
     Image ImageAlpha;
-    //ImageAlpha.Load("scenic.png");
+    ImageAlpha.Load("colors.png");
     PostProcess::Alpha(ImageAlpha.m_buffer, 120);
 
-    vertices_t vertices{ glm::vec3{ -5, 5, 0}, glm::vec3{5, 5, 0}, glm::vec3{-5, -5, 0} };
-    //Model model(vertices, { 255, 0, 0, 255 });
+    // shader
+    VertexShader::uniforms.view = camera.GetView();
+    VertexShader::uniforms.projection = camera.GetProjection();
+    VertexShader::uniforms.ambient = color3_t{ 0.1f };
+
+    VertexShader::uniforms.light.position = glm::vec3{ 10, 10, -10 };
+    VertexShader::uniforms.light.direction = glm::vec3{ 0, -1, 0 };
+    VertexShader::uniforms.light.color = color3_t{ 1 };
+
+    Shader::framebuffer = &framebuffer;
 
     std::shared_ptr<Model> model = std::make_shared<Model>();
     //model->Load("ww_plane.obj");
     //model->Load("Clouds.obj");
-    model->Load("Bird.obj");
-    model->SetColor({ 255, 0, 0, 255 });
+    //model->Load("Bird.obj");
+    model->Load("cub..obj");
+    model->SetColor({ 1, 0, 0, 1 });
 
     std::vector<std::unique_ptr<Actor>> actors;
     for (int i = 0; i < 3; i++)
     {
         Transform transform{ { randomf(-10.0f, 15.0f), randomf(115.0f, 300.0f), randomf(-100.0f, -10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 30) } };
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
-        actor->SetColor({ (uint8_t)random(256), (uint8_t)random(256), (uint8_t)random(256), 255 });
         actors.push_back(std::move(actor));
     }
 
@@ -157,9 +166,9 @@ int main(int argc, char* argv[])
 
 #pragma endregion
 
-#pragma region MouseTracking
         int mx, my;
         SDL_GetMouseState(&mx, &my);
+#pragma region MouseTracking
 
         //framebuffer.DrawLinearCurve(100, 100, 200, 200, { 255, 255, 255, 255 });
         ////framebuffer.DrawQuadraticCurve(100, 200, mx, my, 300, 200, { 255, 0, 255, 255 });
@@ -207,10 +216,12 @@ int main(int argc, char* argv[])
         }
 
         camera.SetView(cameraTransform.position, cameraTransform.position + cameraTransform.GetForward());
+        VertexShader::uniforms.view = camera.GetView();
 
         for (auto& actor : actors)
         {
-            actor->Draw(framebuffer, camera);
+            actor->GetTransform().rotation.y += time.GetDeltaTime() * 90;
+            actor->Draw();
         }
 #pragma endregion
 

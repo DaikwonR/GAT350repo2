@@ -4,6 +4,7 @@
 #include <algorithm>
 
 using color_t = SDL_Color;
+using color4_t = SDL_Color;
 
 enum class BlendMode
 {
