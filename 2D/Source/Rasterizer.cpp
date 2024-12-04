@@ -38,19 +38,43 @@ namespace Rasterizer
 
 				if (w0 >= 0 && w1 >= 0 && w2 >= 0) 
 				{
+					
+
+					// create fragment shader input
+
+					float z = w0 * v0.position.z + w1 * v1.position.z + w2 * v2.position.z;
+					if (CheckDepth(framebuffer, p, z)) WriteDepth(framebuffer, p, z);
+					else continue;
+
 					// interpolate vertex attributes
-					color3_t color = w0 * v0.color + w1 * v1.color + w2 * v2.color;
 
 					// create fragment shader input
 					fragment_input_t fragment;
+					color3_t color = w0 * v0.color + w1 * v1.color + w2 * v2.color;
+
+					// fragment position
+					fragment.postion = w0 * v0.position + w1 * v1.position + w2 * v2.position;
+					fragment.normal = w0 * v0.normal + w1 * v1.normal + w2 * v2.normal;
 					fragment.color = color4_t{ color, 1 };
-					
+
 					// call fragment shader
 					color4_t output_color = FragmentShader::Process(fragment);
 					framebuffer.DrawPoint(x, y, ColorConvert(output_color));
 				}
 			}
 		}
+	}
+
+	bool CheckDepth(Framebuffer& framebuffer, const glm::vec2& position, float z)
+	{
+		
+		return (z < framebuffer.GetDepth()[(int)position.y * framebuffer.m_width + (int)position.x]);
+	}
+
+	void WriteDepth(Framebuffer& framebuffer, const glm::vec2& position, float z)
+	{
+		
+		framebuffer.GetDepth()[(int)position.y * framebuffer.m_width + (int)position.x] = z;
 	}
 
 }

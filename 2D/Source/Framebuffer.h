@@ -4,6 +4,7 @@
 
 #include <SDL.h>
 #include <vector>
+#include <limits>
 
 
 class Framebuffer
@@ -32,8 +33,15 @@ public:
 
 	std::vector<color_t>& Buffer() { return m_buffer; }
 
+
 	int ComputeClipCode(int x, int y);
 	bool ClipLine(int& x1, int& x2, int& y1, int& y2);
+
+	std::vector<float>& GetDepth()
+	{
+		return m_depth;
+	}
+
 public:     
 	int m_width{ 0 };
 	int m_height{ 0 };
@@ -41,6 +49,7 @@ public:
 
 	SDL_Texture* m_texture{ nullptr };
 	std::vector<color_t> m_buffer;
+	std::vector<float> m_depth;
 
 	const int INSIDE = 0; // 0000
 	const int LEFT = 1; // 0001
@@ -48,3 +57,4 @@ public:
 	const int BOTTOM = 4; // 0100
 	const int TOP = 8; // 1000
 };
+

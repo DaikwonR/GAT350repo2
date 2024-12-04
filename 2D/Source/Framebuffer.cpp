@@ -17,6 +17,8 @@ Framebuffer::Framebuffer(const Renderer& renderer, int width, int height)
 		std::cerr << "Error creating SDL window: " << SDL_GetError() << std::endl;
 	}
 	m_buffer.resize(width * height);
+
+	m_depth.resize(m_width * m_height);
 }
 bool Framebuffer::ClipLine(int& x1, int& x2, int& y1, int& y2)
 {
@@ -112,6 +114,8 @@ void Framebuffer::Update()
 void Framebuffer::Clear(const color_t& color)
 {
 	std::fill(m_buffer.begin(), m_buffer.end(), color);
+
+	std::fill(m_depth.begin(), m_depth.end(), std::numeric_limits<float>::max());
 }
 
 void Framebuffer::DrawPoint(int x, int y, const color_t& color)

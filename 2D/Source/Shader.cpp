@@ -1,9 +1,17 @@
 #include "Shader.h"
 #include "Framebuffer.h"
 #include "Rasterizer.h"
-#include "MathUtils.h"
 
+Shader::uniforms_t Shader::uniforms =
+{
+	glm::mat4{ 1 }, // model
+	glm::mat4{ 1 }, // view
+	glm::mat4{ 1 }, // projection
+	color3_t{ 1 }
+};
 Framebuffer* Shader::framebuffer{ nullptr };
+eFrontFace Shader::front_face{ CW };
+eCullMode Shader::cull_mode{ NONE };
 
 void Shader::Draw(const vertexbuffer_t& vb)
 {
@@ -30,7 +38,21 @@ void Shader::Draw(const vertexbuffer_t& vb)
 		if (!ToScreen(v1, s1)) continue;
 		if (!ToScreen(v2, s2)) continue;
 
-		float z = cross(s1, s2);
+		float z = cross(s1 - s0, s2 - s0);
+
+		switch (cull_mode)
+		{
+		case FRONT:
+			if (z > 0) continue;
+			break;
+		case BACK:
+			if (z < 0) continue;
+			break;
+		case NONE:
+			break;
+		default:
+			break;
+		}
 
 		// rasterization
 		Rasterizer::Triangle(*framebuffer, s0, s1, s2, v0, v1, v2 );

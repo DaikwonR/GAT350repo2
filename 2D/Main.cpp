@@ -52,13 +52,13 @@ int main(int argc, char* argv[])
     PostProcess::Alpha(ImageAlpha.m_buffer, 120);
 
     // shader
-    VertexShader::uniforms.view = camera.GetView();
-    VertexShader::uniforms.projection = camera.GetProjection();
-    VertexShader::uniforms.ambient = color3_t{ 0.01f };
+    Shader::uniforms.view = camera.GetView();
+    Shader::uniforms.projection = camera.GetProjection();
+    Shader::uniforms.ambient = color3_t{ 0.01f };
 
-    VertexShader::uniforms.light.position = glm::vec3{ 10, 10, -10 };
-    VertexShader::uniforms.light.direction = glm::vec3{ 0, -1, 0 };
-    VertexShader::uniforms.light.color = color3_t{ 1 };
+    Shader::uniforms.light.position = glm::vec3{ 10, 10, -10 };
+    Shader::uniforms.light.direction = glm::vec3{ 0, -1, 0 };
+    Shader::uniforms.light.color = color3_t{ 1 };
 
     Shader::framebuffer = &framebuffer;
 
@@ -69,6 +69,11 @@ int main(int argc, char* argv[])
     model->Load("cube.obj");
     model->SetColor({ 1, 0, 0, 1 });
 
+    /*std::shared_ptr<material_t> blue = std::make_shared<material_t>();
+    blue->albedo = color3_t{ 0, 0, 1 };
+    blue->specular = color3_t{ 1 };
+    blue->shininess = 16.0f;*/
+
     std::vector<std::unique_ptr<Actor>> actors;
     for (int i = 0; i < 3; i++)
     {
@@ -76,7 +81,6 @@ int main(int argc, char* argv[])
         std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
         actors.push_back(std::move(actor));
     }
-
 
 
 #pragma endregion
@@ -216,7 +220,7 @@ int main(int argc, char* argv[])
         }
 
         camera.SetView(cameraTransform.position, cameraTransform.position + cameraTransform.GetForward());
-        VertexShader::uniforms.view = camera.GetView();
+        Shader::uniforms.view = camera.GetView();
 
         for (auto& actor : actors)
         {
