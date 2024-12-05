@@ -24,25 +24,27 @@ void VertexShader::Process(const vertex_t& ivertex, vertex_output_t& overtex)
     glm::vec3 light_dir = glm::normalize(light_position - vposition); // normalize light direction
     float intensity = std::max(0.0f, glm::dot(light_dir, overtex.normal));
     color3_t diffuse = Shader::uniforms.light.color * intensity;
-    overtex.color = Shader::uniforms.ambient + diffuse;
+    
 
 
-    glm::vec3 wposition = glm::vec4{ light_dir, 1 } * Shader::uniforms.view;
+    /*glm::vec3 wposition = glm::vec4{ light_dir, 1 } * Shader::uniforms.view;
     glm::vec3 dir_light = glm::normalize(-wposition);
     float dir_intensity = std::max(0.0f, glm::dot(dir_light, overtex.normal));
     color3_t dir_diffuse = Shader::uniforms.light.color * dir_intensity;
-    overtex.color = Shader::uniforms.ambient + dir_diffuse;
+    overtex.color = Shader::uniforms.ambient + dir_diffuse;*/
 
     color3_t specular = color3_t{ 0 };
-    if (intensity)
+    if (intensity > 0)
     {
         glm::vec3 reflection = glm::reflect(-light_dir, overtex.normal);
         glm::vec3 view_dir = glm::normalize(overtex.position);
         intensity = std::max(glm::dot(reflection, view_dir), 0.0f);
-        /*intensity = pow(intensity, Shader::uniforms.material.shininess);
-        specular = Shader::uniforms.material.specular * intensity;*/
+        intensity = pow(intensity, Shader::uniforms.m_material.shininess);
+        specular = Shader::uniforms.m_material.specular * intensity;
 
     }
+
+    overtex.color = ((Shader::uniforms.ambient + diffuse) * Shader::uniforms.m_material.albedo) + specular;
 
 #endif // 0
 

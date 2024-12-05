@@ -21,7 +21,7 @@ public:
 
 private:
 	glm::mat4 m_view{1};
-	glm::mat4 m_projection{0};
+	glm::mat4 m_projection{1};
 
 	int m_width{ 0 };
 	int m_height{ 0 };

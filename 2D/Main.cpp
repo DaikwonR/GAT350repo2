@@ -38,8 +38,8 @@ int main(int argc, char* argv[])
     SetBlendMode(BlendMode::Normal);
 
     Camera camera(renderer.m_width, renderer.m_height);
-    camera.SetView(glm::vec3{ 0, 0, 0 }, glm::vec3{ 0 });
-    camera.SetProjection(60.0f, 800.0f / 600, 0.1f, 200.0f);
+    camera.SetView(glm::vec3{ 0, 0, -20 }, glm::vec3{ 0 });
+    camera.SetProjection(90.0f, 800.0f / 600, 0.1f, 200.0f);
     Transform cameraTransform{ { 0, 0, -20 } };
 
     Framebuffer framebuffer(renderer, 800, 600);
@@ -66,20 +66,37 @@ int main(int argc, char* argv[])
     //model->Load("ww_plane.obj");
     //model->Load("Clouds.obj");
     //model->Load("Bird.obj");
-    model->Load("cube.obj");
+    model->Load("sphere.obj");
     model->SetColor({ 1, 0, 0, 1 });
 
-    /*std::shared_ptr<material_t> blue = std::make_shared<material_t>();
-    blue->albedo = color3_t{ 0, 0, 1 };
-    blue->specular = color3_t{ 1 };
-    blue->shininess = 16.0f;*/
+    std::shared_ptr<material_t> color = std::make_shared<material_t>();
+    color->albedo = color3_t{ 1.6, 1.6, 0.5 };
+    color->specular = color3_t{ 1 };
+    color->shininess = 105.0f;
+    
+    std::shared_ptr<material_t> red = std::make_shared<material_t>();
+    red->albedo = color3_t{ 1, 0, 0 };
+    red->specular = color3_t{ .8f };
+    red->shininess = 106.0f;
+
+    
 
     std::vector<std::unique_ptr<Actor>> actors;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 1; i++)
     {
-        Transform transform{ { randomf(-10.0f, 15.0f), randomf(115.0f, 300.0f), randomf(-100.0f, -10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 30) } };
-        std::unique_ptr<Actor> actor = std::make_unique<Actor>(transform, model);
-        actors.push_back(std::move(actor));
+        //Transform transform1{ { randomf(-10.0f, 15.0f), randomf(115.0f, 300.0f), randomf(-100.0f, -10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 30) } };
+        Transform transform1{ glm::vec3{ -5, 0, 0 }, glm::vec3{0, 0, 0}, glm::vec3{ 3 } };
+        std::unique_ptr<Actor> actor1 = std::make_unique<Actor>(transform1, model, color);
+        
+        actors.push_back(std::move(actor1));
+    }
+    for (int i = 0; i < 1; i++)
+    {
+        //Transform transform2{ { randomf(-10.0f, 15.0f), randomf(115.0f, 300.0f), randomf(-100.0f, -10.0f) }, glm::vec3{0, 0, 0}, glm::vec3{ randomf(2, 30) } };
+        Transform transform2{ glm::vec3{ 5, 0, 0 }, glm::vec3{0, 0, 0}, glm::vec3{ 3 } };
+        std::unique_ptr<Actor> actor2 = std::make_unique<Actor>(transform2, model, red);
+        
+        actors.push_back(std::move(actor2));
     }
 
 
