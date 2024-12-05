@@ -11,6 +11,8 @@
 - [Third-Party Libraries](#third_party_libraries)
 - [Build Instructions](#build_instructions)
 
+- Welcome to my lovely description of how I learned what software rendering was in both 2 and 3D!
+
 ## Project Overview
 - For this solution I was able to implement rasterization techniques, such as building wireframes that invluded drawing lines and conjoining triangles to build and display models to be rendered in the scene.
 - I was able to handle image processing to display as backgrounds but also to show how transparency or colorin works within imaging.
