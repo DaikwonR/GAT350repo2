@@ -20,10 +20,16 @@
 
 ## software_rendering
 - Functionality for 2D/3D software rendering, revolving around lighting and camera to eye positioning, and algorithms that effectively draw and can even fill in wireframes for objects being rendered to the console.
+- Images of what was rendered here:
+- https://neumont-my.sharepoint.com/:i:/g/personal/draney_student_neumont_edu/EdcZsgyvOolBgIOtaDIlqfABMwN_gI4paCRHMjFWrY62-A?e=vrPD5K (Shows wireframing)
+- https://neumont-my.sharepoint.com/:i:/g/personal/draney_student_neumont_edu/EYsRatqsrvhMtg90LXFJAMwBbMiAt5NZRou1YyWzyuY7Hw?e=Kw894G (Shows Lighting)
 
 ## ray_tracing
 - This is more specifically ray tracing involving drawing to the console and 3D rendering. This is more developed object building and scene manipulation by adding enhanced detailed materialing for not just objects but also the background.
 - Examples include: Metal detailing, Lambertian, Emissive, Dielectric, etc. however in this project we involved less filling of the wireframes and more so how they are placed in the scene.
+- Images of what was rendered here:
+- https://neumont-my.sharepoint.com/:i:/g/personal/draney_student_neumont_edu/EVgmx2eRyTpCohh3JfPlNXUBhQdZW0WAtPd_1InmiILZZA?e=f7P1Dr (shows mexample of materials affecting objects such as metal/emissive)
+- https://neumont-my.sharepoint.com/:i:/g/personal/draney_student_neumont_edu/EazsDR2i_jNOk1P4KuijgfUBlby6xuHX28ihVq4JYA32yg?e=cZZ6qA (shows exaple of materials affecting scenery such as dielectric/emissive)
 
 ## third_party_libraries
 - We incorporated inumerable libraries to help us do spcific processing and algorithims.
