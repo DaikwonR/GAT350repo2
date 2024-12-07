@@ -50,12 +50,12 @@ namespace Rasterizer
 
 					// create fragment shader input
 					fragment_input_t fragment;
-					color3_t color = w0 * v0.color + w1 * v1.color + w2 * v2.color;
+					// color3_t color = w0 * v0.color + w1 * v1.color + w2 * v2.color;
 
 					// fragment position
-					fragment.postion = w0 * v0.position + w1 * v1.position + w2 * v2.position;
+					fragment.position = w0 * v0.position + w1 * v1.position + w2 * v2.position;
 					fragment.normal = w0 * v0.normal + w1 * v1.normal + w2 * v2.normal;
-					fragment.color = color4_t{ color, 1 };
+					// fragment.color = color4_t{ color, 1 };
 
 					// call fragment shader
 					color4_t output_color = FragmentShader::Process(fragment);

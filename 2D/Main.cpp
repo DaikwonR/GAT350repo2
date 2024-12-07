@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
     //model->Load("ww_plane.obj");
     //model->Load("Clouds.obj");
     //model->Load("Bird.obj");
-    model->Load("sphere.obj");
+    model->Load("buddha.obj");
     model->SetColor({ 1, 0, 0, 1 });
 
     std::shared_ptr<material_t> color = std::make_shared<material_t>();
